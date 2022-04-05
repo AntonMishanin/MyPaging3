@@ -5,5 +5,5 @@ import com.my.mypaging3.library.domain.UserRepository
 class LocalUserRepository(
     private val dataSource: LocalUserDataSource
 ) : UserRepository {
-    override fun fetchUsersByPage(page: Int) = dataSource.fetchUsers(page)
+    override suspend fun fetchUsersByPage(page: Int) = dataSource.fetchUsers(page)
 }
