@@ -8,6 +8,12 @@
     tools:context=".StartActivity">
 
     <Button
+        android:id="@+id/work_manager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Work Manager" />
+
+    <Button
         android:id="@+id/custom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
