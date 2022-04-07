@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.my.mypaging3">
 
+    <uses-permission android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -27,6 +30,10 @@
         <activity
             android:name=".library.presentation.MainActivity"
             android:exported="false" />
+
+        <receiver
+            android:name=".work.NotificationActions"
+            android:exported="false"/>
     </application>
 
 </manifest>

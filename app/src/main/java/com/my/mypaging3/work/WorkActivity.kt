@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.work.*
 import com.my.mypaging3.R
 import kotlinx.coroutines.delay
+import java.util.concurrent.TimeUnit
 
 class WorkActivity : AppCompatActivity() {
 
@@ -15,7 +16,9 @@ class WorkActivity : AppCompatActivity() {
         setContentView(R.layout.activity_work)
 
         val uploadWorkRequest: WorkRequest =
-            OneTimeWorkRequestBuilder<UploadWorker>()
+        //OneTimeWorkRequestBuilder<UploadWorker>()
+            //    .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            PeriodicWorkRequestBuilder<UploadWorker>(15L, TimeUnit.MINUTES)
                 .setInputData(workDataOf("some_options" to "VALUE"))
                 .build()
 
@@ -27,12 +30,14 @@ class WorkActivity : AppCompatActivity() {
             Log.d("EE", "${it.state}")
 
             if (it.state == WorkInfo.State.FAILED || it.state == WorkInfo.State.CANCELLED) {
-        //        notificationConfig.cancelNotification()
+                //        notificationConfig.cancelNotification()
             }
         }
 
-     //   notificationConfig.makeNotification("message")
+        //   notificationConfig.makeNotification("message")
         workManager.enqueue(uploadWorkRequest)
+
+        //NotificationConfig(applicationContext).showNotification("sd", UUID.randomUUID())
     }
 }
 
@@ -41,14 +46,22 @@ class UploadWorker(
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
 
+    //Worker or WorkManager manages notification's lifecycle
     private val notificationConfig by lazy { NotificationConfig(applicationContext) }
 
-    override suspend fun getForegroundInfo() = ForegroundInfo(
-        notificationConfig.getNotificationId(),
-        notificationConfig.createNotification(id)
-    )
+    //override suspend fun getForegroundInfo() = ForegroundInfo(
+    //    notificationConfig.getNotificationId(),
+    //    notificationConfig.createNotification(id)
+    //)
 
     override suspend fun doWork(): Result {
+
+        setForeground(
+            ForegroundInfo(
+                notificationConfig.getNotificationId(),
+                notificationConfig.createNotification(id)
+            )
+        )
 
         val value = inputData.getString("some_options")
         Log.d("EE", "WORKER = $value")
