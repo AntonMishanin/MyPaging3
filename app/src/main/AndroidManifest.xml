@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPaging3">
         <activity
+            android:name=".viewmodel.ViewModelByHandActivity"
+            android:exported="false" />
+        <activity
             android:name=".work.WorkActivity"
             android:exported="false" />
         <activity
@@ -33,7 +36,7 @@
 
         <receiver
             android:name=".work.NotificationActions"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

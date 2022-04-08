@@ -8,6 +8,12 @@
     tools:context=".StartActivity">
 
     <Button
+        android:id="@+id/viewModel"
+        android:text="View Model"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
         android:id="@+id/work_manager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
