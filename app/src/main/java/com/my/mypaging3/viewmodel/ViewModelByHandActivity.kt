@@ -5,39 +5,66 @@ import android.os.Bundle
 import android.util.Log
 import com.my.mypaging3.R
 
-class ViewModelByHandActivity : AppCompatActivity() {
+open class ViewModelByHandActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: ViewModelByHand
+    companion object {
+        private var viewModel: ViewModelByHand? = null
+    }
 
-    private companion object {
-        class SomeClass {
-            lateinit var viewModel: ViewModelByHand
+    class SomeClass {
+        companion object {
+            internal var viewModel: ViewModelByHand? = null
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_model_by_hand)
+        applicationContext
+        // if (savedInstanceState == null) {
+        //     viewModel = ViewModelByHand()
+        //     val s = SomeClass()
+        //     s.viewModel = viewModel ?: ViewModelByHand()
 
-        val lastNonConfigurationInstance = lastNonConfigurationInstance as SomeClass
+        //     Log.d("EE", "FIRST TIME")
+        // } else {
+        //     viewModel = (lastNonConfigurationInstance as? SomeClass)?.viewModel
 
-        if (lastNonConfigurationInstance == null) {
-            val someClass = SomeClass()
-            someClass.viewModel = ViewModelByHand()
-            viewModel = someClass.viewModel
+        //     Log.d("EE", "ROTATED")
+        // }
+        /// viewModel = (lastNonConfigurationInstance as? SomeClass)?.viewModel
+
+        //if (savedInstanceState == null) {
+        //    SomeClass.viewModel = ViewModelByHand()
+        //}
+
+        //if (SomeClass.viewModel == null) {
+        //    SomeClass.viewModel = ViewModelByHand()
+        //}
+        //viewModel = SomeClass.viewModel!!
+
+        if (viewModel == null) {
+            viewModel = ViewModelByHand()
         }
 
-        //
-        //     val reference = savedInstanceState?.getString("KEY")
-        //     if (reference == null) {
-        //         Holder().viewModel = ViewModelByHand()
-        //     } else {
-        //         //(lastNonConfigurationInstance as Holder).viewModel
+        Log.d("EE", "onCreate VM ${viewModel?.value}")
 
-        //         //    viewModel = c.newInstance() as ViewModelByHand
-        //     }
+        Log.d("EE", "onCreate $lastNonConfigurationInstance")
+    }
 
-        Log.d("EE", "onCreate ${viewModel.value}")
+    override fun onRetainCustomNonConfigurationInstance(): Any? {
+        Log.d("EE", "RETAIN")
+        val s = ViewModelHolder()
+        // s.viewModel = ViewModelByHand()
+        return s
+    }
+
+    //override fun onRetainNonConfigurationInstance(): Any?{
+    //    return "1111111111"
+    //}
+
+    override fun getLastCustomNonConfigurationInstance(): Any? {
+        return super.getLastCustomNonConfigurationInstance()
     }
 
     override fun onStart() {
@@ -53,12 +80,13 @@ class ViewModelByHandActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.d("EE", "onResume")
+        Log.d("EE", "onResume $lastNonConfigurationInstance")
     }
 
     override fun onPause() {
         super.onPause()
         Log.d("EE", "onPause")
-        viewModel.value = (1..5000000).random()
+        viewModel?.value = (1..5000000).random()
     }
 
     override fun onStop() {
@@ -78,4 +106,11 @@ class ViewModelByHand() {
     }
 
     var value = 1
+}
+
+class ViewModelHolder {
+    companion object {
+        lateinit var viewModel: ViewModelByHand
+    }
+
 }
