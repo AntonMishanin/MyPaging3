@@ -8,10 +8,16 @@
     tools:context=".StartActivity">
 
     <Button
-        android:id="@+id/viewModel"
-        android:text="View Model"
+        android:id="@+id/custom_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Custom view" />
+
+    <Button
+        android:id="@+id/viewModel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Model" />
 
     <Button
         android:id="@+id/work_manager"

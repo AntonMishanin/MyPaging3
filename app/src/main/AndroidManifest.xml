@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPaging3">
         <activity
+            android:name=".custom_view.LearnViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".viewmodel.ViewModelByHandActivity"
             android:exported="false" />
         <activity
