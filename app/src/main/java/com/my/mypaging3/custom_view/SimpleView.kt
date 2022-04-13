@@ -47,6 +47,8 @@ class SimpleView : AppCompatEditText {
                 }
             }
         })
+
+        // onTouchEvent()
     }
 
     override fun onSaveInstanceState(): Parcelable? {
@@ -65,7 +67,7 @@ class SimpleView : AppCompatEditText {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        setMeasuredDimension(400, 599)
+        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec)
         Log.d("EE", "onMeasure")
     }
 
@@ -79,19 +81,46 @@ class SimpleView : AppCompatEditText {
         Log.d("EE", "onLayout")
     }
 
+    override fun draw(canvas: Canvas?) {
+        super.draw(canvas)
+        Log.d("EE", "draw")
+    }
+
+    //draw the children
+    //draw(canvas: Canvas?) invoke this fun
     override fun dispatchDraw(canvas: Canvas?) {
         super.dispatchDraw(canvas)
         Log.d("EE", "dispatchDraw")
 
         //If something about your view changes that will affect the size,
         //then you should call requestLayout()
-        //It doesn't guaranteed redraw
+        //It doesn't guaranteed redraw so you need to invoke invalidate()
+        //mParent.requestLayout(); - Also invoke parent's requestLayout()
+        //It doesn't invoke child's requestLayout()
         requestLayout()
 
         //The view will be redrawn but the size will not change.
         invalidate()
 
+        //https://stackoverflow.com/questions/45383948/how-does-forcelayout-work-in-android
+        //This method does not call requestLayout() or forceLayout() on the parent.
+        //Usage: if you don't want to invoke child's requestLayout() directly
+        //You can invoke parent's requestLayout() and invoke child's forceLayout()
+        /*From table layout
+        public void requestLayout() {
+            if (mInitialized) {
+                int count = getChildCount();
+                for (int i = 0; i < count; i++) {
+                    getChildAt(i).forceLayout();
+                }
+            }
+
+            super.requestLayout();
+        }*/
         forceLayout()
+
+        //
+        parent.requestDisallowInterceptTouchEvent(true)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -102,5 +131,13 @@ class SimpleView : AppCompatEditText {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         Log.d("EE", "onDetachedFromWindow")
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+    }
+
+    override fun onVisibilityAggregated(isVisible: Boolean) {
+        super.onVisibilityAggregated(isVisible)
     }
 }
