@@ -38,4 +38,26 @@
         custom:layout_constraintBottom_toBottomOf="parent"
         custom:layout_constraintEnd_toEndOf="parent" />
 
+    <com.my.mypaging3.custom_view.MyCustomViewGroup
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@android:color/darker_gray"
+        custom:layout_constraintBottom_toBottomOf="parent"
+        custom:layout_constraintEnd_toEndOf="parent"
+        custom:layout_constraintStart_toStartOf="parent"
+        custom:layout_constraintTop_toTopOf="parent"
+        custom:layout_constraintVertical_bias="0.0">
+
+        <Button
+            android:text="VIEW1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="VIEW2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.my.mypaging3.custom_view.MyCustomViewGroup>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
