@@ -1,6 +1,7 @@
 package com.my.mypaging3.custom_view
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Parcelable
@@ -9,6 +10,8 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.content.ContextCompat
+import com.my.mypaging3.R
 
 /*class SimpleView @JvmOverloads constructor(
     context: Context,
@@ -23,13 +26,21 @@ class SimpleView : AppCompatEditText {
     constructor(
         context: Context,
         attrs: AttributeSet?
-    ) : super(context, attrs)
+    ) : super(context, attrs) {
+        if (attrs == null) return
+
+        initParams(attrs)
+    }
 
     constructor(
         context: Context,
         attrs: AttributeSet?,
         defStyleAttr: Int
-    ) : super(context, attrs, defStyleAttr)
+    ) : super(context, attrs, defStyleAttr) {
+        if (attrs == null) return
+
+        initParams(attrs)
+    }
 
     init {
         Log.d("EE", "init")
@@ -49,6 +60,27 @@ class SimpleView : AppCompatEditText {
         })
 
         // onTouchEvent()
+    }
+
+    private fun initParams(attrs: AttributeSet) {
+        val attributeArray: TypedArray = context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.custom_view, 0, 0
+        )
+
+        val color = attributeArray.getColor(
+            R.styleable.custom_view_circle_background,
+            ContextCompat.getColor(context, android.R.color.background_dark)
+        )
+
+        val center = attributeArray.getBoolean(R.styleable.custom_view_onCenter, false)
+        val size = attributeArray.getInt(R.styleable.custom_view_carbon_rippleColor, 1)
+
+        attributeArray.recycle()
+
+        Log.d("EE", "color = $color")
+        Log.d("EE", "center = $center")
+        Log.d("EE", "size = $size")
     }
 
     override fun onSaveInstanceState(): Parcelable? {
@@ -97,10 +129,10 @@ class SimpleView : AppCompatEditText {
         //It doesn't guaranteed redraw so you need to invoke invalidate()
         //mParent.requestLayout(); - Also invoke parent's requestLayout()
         //It doesn't invoke child's requestLayout()
-        requestLayout()
+        //requestLayout()
 
         //The view will be redrawn but the size will not change.
-        invalidate()
+        //invalidate()
 
         //https://stackoverflow.com/questions/45383948/how-does-forcelayout-work-in-android
         //This method does not call requestLayout() or forceLayout() on the parent.
@@ -117,10 +149,10 @@ class SimpleView : AppCompatEditText {
 
             super.requestLayout();
         }*/
-        forceLayout()
+        //forceLayout()
 
         //
-        parent.requestDisallowInterceptTouchEvent(true)
+        //parent.requestDisallowInterceptTouchEvent(true)
     }
 
     override fun onDraw(canvas: Canvas?) {

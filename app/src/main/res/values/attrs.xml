@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="carbon_rippleColor" format="integer">
+        <enum name="enam1" value="0" />
+        <enum name="enam2" value="1" />
+        <enum name="enam3" value="2" />
+    </attr>
+
+    <declare-styleable name="custom_view">
+        <attr name="onCenter" format="boolean" />
+        <attr name="circle_background" format="color" />
+        <attr name="carbon_rippleColor" />
+    </declare-styleable>
+</resources>
