@@ -11,6 +11,7 @@ import android.util.AttributeSet
 import android.util.Log
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.my.mypaging3.R
 
 /*class SimpleView @JvmOverloads constructor(
@@ -58,7 +59,8 @@ class SimpleView : AppCompatEditText {
                 }
             }
         })
-
+        findViewTreeLifecycleOwner()
+        viewTreeObserver
         // onTouchEvent()
     }
 
