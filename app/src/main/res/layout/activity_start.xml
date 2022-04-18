@@ -8,6 +8,12 @@
     tools:context=".StartActivity">
 
     <Button
+        android:id="@+id/remote_auth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Remote auth" />
+
+    <Button
         android:id="@+id/room"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
