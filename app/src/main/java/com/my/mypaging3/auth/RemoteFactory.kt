@@ -14,12 +14,12 @@ import java.util.concurrent.TimeUnit
 
 private const val TIMEOUT = 120_000L
 private const val AUTH_URL = "https://github.com"
-private const val CONTENT_URL = "https://api.github.com"
+const val CONTENT_URL = "https://api.github.com"
 private const val EMAIL_SCOPE = "user:email"
 
-class RemoteFactory {
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl(AUTH_URL)
+class RemoteFactory(private val token: String = "") {
+    fun provideRetrofit(baseUrl: String = AUTH_URL): Retrofit = Retrofit.Builder()
+        .baseUrl(baseUrl)
         .client(provideOkHttpClient())
         .addCallAdapterFactory(provideRxAdapterFactory())
         .addConverterFactory(provideGsonConverterFactory())
@@ -44,20 +44,21 @@ class RemoteFactory {
         return logging
     }
 
-    private fun provideInterceptor(): Interceptor {
-        return object : Interceptor {
-            override fun intercept(chain: Interceptor.Chain): Response {
-                val url = chain.request().url
-                    .newBuilder()
-                    //.addQueryParameter("client_id", KeyWrapper().provideClientId())
-                    //.addQueryParameter("scope", EMAIL_SCOPE)
-                    .build()
-                val request = chain.request()
-                    .newBuilder()
-                    .url(url)
-                    .build()
-                return chain.proceed(request)
-            }
-        }
+    private fun provideInterceptor(): Interceptor = CustomInterceptor(token)
+}
+
+class CustomInterceptor(private val token: String) : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val url = chain.request().url
+            .newBuilder()
+            //.addQueryParameter("client_id", KeyWrapper().provideClientId())
+            //.addQueryParameter("scope", EMAIL_SCOPE)
+            .build()
+        val request = chain.request()
+            .newBuilder()
+            .addHeader("Authorization", token)
+            .url(url)
+            .build()
+        return chain.proceed(request)
     }
 }
