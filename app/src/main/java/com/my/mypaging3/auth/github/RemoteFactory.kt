@@ -1,6 +1,5 @@
-package com.my.mypaging3.auth
+package com.my.mypaging3.auth.github
 
-import com.my.mypaging3.auth.github.KeyWrapper
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -56,7 +55,7 @@ class CustomInterceptor(private val token: String) : Interceptor {
             .build()
         val request = chain.request()
             .newBuilder()
-            .addHeader("Authorization", token)
+           // .addHeader("Authorization", token)
             .url(url)
             .build()
         return chain.proceed(request)
