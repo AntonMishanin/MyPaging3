@@ -8,6 +8,12 @@
     tools:context=".StartActivity">
 
     <Button
+        android:id="@+id/dynamic_proxy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dynamic proxy" />
+
+    <Button
         android:id="@+id/remote_auth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

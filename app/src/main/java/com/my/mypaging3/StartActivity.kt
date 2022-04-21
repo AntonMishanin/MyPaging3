@@ -7,6 +7,7 @@ import android.view.View
 import com.my.mypaging3.auth.AuthActivity
 import com.my.mypaging3.custom.presentation.CustomPagingActivity
 import com.my.mypaging3.custom_view.LearnViewActivity
+import com.my.mypaging3.dynamic_proxy.DynamicProxyActivity
 import com.my.mypaging3.library.presentation.MainActivity
 import com.my.mypaging3.room.RoomActivity
 import com.my.mypaging3.viewmodel.ViewModelByHandActivity
@@ -16,6 +17,10 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
+
+        findViewById<View>(R.id.dynamic_proxy).setOnClickListener {
+            startActivity(Intent(this, DynamicProxyActivity::class.java))
+        }
 
         findViewById<View>(R.id.remote_auth).setOnClickListener {
             startActivity(Intent(this, AuthActivity::class.java))
