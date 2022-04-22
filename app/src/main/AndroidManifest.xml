@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPaging3">
         <activity
+            android:name=".okhttp.OkHttpActivity"
+            android:exported="false" />
+        <activity
             android:name=".dynamic_proxy.DynamicProxyActivity"
             android:exported="false" />
         <activity
