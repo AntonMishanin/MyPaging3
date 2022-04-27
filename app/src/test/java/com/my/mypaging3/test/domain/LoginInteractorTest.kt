@@ -1,5 +1,6 @@
 package com.my.mypaging3.test.domain
 
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito
@@ -9,6 +10,11 @@ import org.mockito.kotlin.mock
 class LoginInteractorTest {
 
     private val emailValidator = mock<EmailValidator>()
+
+    @After
+    fun afterEach() {
+        Mockito.reset(emailValidator)
+    }
 
     @Test
     fun logIn_successLogin_Success() {

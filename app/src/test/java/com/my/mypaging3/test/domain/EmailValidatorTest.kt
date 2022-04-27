@@ -23,16 +23,16 @@ class EmailValidatorTest {
     }
 
     @Test
-    fun isValid_emptyEmail_false() = assertFalse(validator.isValid(""))
+    fun isValid_emailShouldBeNotEmpty_false() = assertFalse(validator.isValid(""))
 
     @Test
-    fun isValid_emailShorter6_false() = assertFalse(validator.isValid("email5"))
+    fun isValid_emailShouldBeLonger6_false() = assertFalse(validator.isValid("ema@."))
 
     @Test
     //symbol @
-    fun isValid_emailDoesNotContainSpecSymbol_false() =
-        assertEquals(false, validator.isValid("email5rr"))
+    fun isValid_emailShouldHaveSpecSymbol_false() =
+        assertEquals(false, validator.isValid("email5rr."))
 
     @Test
-    fun isValid_emailDoesNotContainDot_false() = assertEquals(false, validator.isValid("email5rr@"))
+    fun isValid_emailShouldHaveDot_false() = assertEquals(false, validator.isValid("email5rr@"))
 }
