@@ -11,6 +11,7 @@ import com.my.mypaging3.dynamic_proxy.DynamicProxyActivity
 import com.my.mypaging3.library.presentation.MainActivity
 import com.my.mypaging3.okhttp.OkHttpActivity
 import com.my.mypaging3.room.RoomActivity
+import com.my.mypaging3.test.presentation.LoginActivity
 import com.my.mypaging3.viewmodel.ViewModelByHandActivity
 import com.my.mypaging3.websocket.WebSocketActivity
 import com.my.mypaging3.work.WorkActivity
@@ -19,6 +20,10 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
+
+        findViewById<View>(R.id.lesson_tests).setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
 
         findViewById<View>(R.id.websocket).setOnClickListener {
             startActivity(Intent(this, WebSocketActivity::class.java))
