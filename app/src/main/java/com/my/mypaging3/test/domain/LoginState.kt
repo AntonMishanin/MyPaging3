@@ -1,7 +1,30 @@
 package com.my.mypaging3.test.domain
 
-sealed class LoginState {
-    object Success : LoginState()
-    object Error : LoginState()
-    object Loading : LoginState()
+import android.view.View
+import com.my.mypaging3.databinding.ActivityLoginBinding
+
+interface LoginState {
+
+    fun handle(binding: ActivityLoginBinding)
+
+    class Success : LoginState {
+        override fun handle(binding: ActivityLoginBinding) {
+            binding.success.visibility = View.VISIBLE
+            binding.error.visibility = View.GONE
+        }
+    }
+
+    class Error : LoginState {
+        override fun handle(binding: ActivityLoginBinding) {
+            binding.success.visibility = View.GONE
+            binding.error.visibility = View.VISIBLE
+        }
+    }
+
+    class Loading : LoginState {
+        override fun handle(binding: ActivityLoginBinding) {
+            binding.success.visibility = View.GONE
+            binding.error.visibility = View.GONE
+        }
+    }
 }

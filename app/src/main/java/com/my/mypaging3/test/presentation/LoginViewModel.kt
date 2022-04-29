@@ -1,7 +1,5 @@
 package com.my.mypaging3.test.presentation
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +14,7 @@ class LoginViewModel(
     private val logger: Logger
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<LoginState>(LoginState.Loading)
+    private val _state = MutableLiveData<LoginState>(LoginState.Loading())
     val state: LiveData<LoginState> = _state
 
     fun logInClicked(email: String) {

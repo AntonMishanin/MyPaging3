@@ -7,11 +7,11 @@ class LoginInteractor(
     fun logIn(email: String?): LoginState {
         return try {
             when (emailValidator.isValid(email)) {
-                true -> LoginState.Success
-                false -> LoginState.Error
+                true -> LoginState.Success()
+                false -> LoginState.Error()
             }
         } catch (e: NullPointerException) {
-            LoginState.Error
+            LoginState.Error()
         }
     }
 }
