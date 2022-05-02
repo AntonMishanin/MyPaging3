@@ -8,6 +8,12 @@
     tools:context=".StartActivity">
 
     <Button
+        android:id="@+id/dagger"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dagger" />
+
+    <Button
         android:id="@+id/lesson_tests"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -88,4 +88,8 @@ dependencies {
 
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
     implementation "io.reactivex.rxjava2:rxjava:2.2.12"
+
+    //Dagger
+    implementation("com.google.dagger:dagger:2.36")
+    kapt("com.google.dagger:dagger-compiler:2.36")
 }
