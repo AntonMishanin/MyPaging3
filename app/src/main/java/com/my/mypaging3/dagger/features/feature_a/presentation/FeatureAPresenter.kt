@@ -1,6 +1,6 @@
 package com.my.mypaging3.dagger.features.feature_a.presentation
 
-import android.util.Log
+import com.my.mypaging3.dagger.core.CustomLogger
 import com.my.mypaging3.dagger.features.feature_a.domain.FeatureAInteractor
 
 interface FeatureAPresenter {
@@ -8,11 +8,12 @@ interface FeatureAPresenter {
     fun onViewAttached(view: FeatureAView)
 
     class Base(
-        private val interactor: FeatureAInteractor
+        private val interactor: FeatureAInteractor,
+        private val logger: CustomLogger
     ) : FeatureAPresenter {
 
         override fun onViewAttached(view: FeatureAView) {
-            Log.d("EE", "onViewAttached")
+            logger.debug("onViewAttached")
         }
     }
 

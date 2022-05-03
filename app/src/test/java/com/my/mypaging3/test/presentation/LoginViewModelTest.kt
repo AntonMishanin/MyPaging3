@@ -38,7 +38,7 @@ internal class LoginViewModelTest {
     fun `default state should be loading`() {
         val viewModel = provideViewModel()
 
-        Assert.assertEquals(LoginState.Loading, viewModel.state.value)
+        Assert.assertEquals(LoginState.Loading(), viewModel.state.value)
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class LoginViewModelTest {
         val loginInteractor = mock<LoginInteractor>()
         val viewModel = provideViewModel(loginInteractor)
         val email = "same_email"
-        val resultState = LoginState.Success
+        val resultState = LoginState.Success()
         Mockito.`when`(loginInteractor.logIn(email)).thenReturn(resultState)
 
         viewModel.logInClicked(email)
@@ -59,7 +59,7 @@ internal class LoginViewModelTest {
         val loginInteractor = mock<LoginInteractor>()
         val viewModel = provideViewModel(loginInteractor)
         val email = "same_email"
-        val resultState = LoginState.Error
+        val resultState = LoginState.Error()
         Mockito.`when`(loginInteractor.logIn(email)).thenReturn(resultState)
 
         viewModel.logInClicked(email)
