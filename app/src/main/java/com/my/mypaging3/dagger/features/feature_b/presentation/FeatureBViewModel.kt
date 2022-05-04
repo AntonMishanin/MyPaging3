@@ -1,4 +1,4 @@
-package com.my.mypaging3.dagger.features.feature_b
+package com.my.mypaging3.dagger.features.feature_b.presentation
 
 import androidx.lifecycle.ViewModel
 import com.my.mypaging3.dagger.core.CustomLogger

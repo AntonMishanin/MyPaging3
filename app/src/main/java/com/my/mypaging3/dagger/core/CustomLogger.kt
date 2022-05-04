@@ -9,6 +9,10 @@ interface CustomLogger {
 
     class Base(private val context: Context) : CustomLogger {
 
+        init {
+            Log.d("EE", "LOGGER INIT")
+        }
+
         override fun debug(message: String) {
             Log.d("EE", message)
         }

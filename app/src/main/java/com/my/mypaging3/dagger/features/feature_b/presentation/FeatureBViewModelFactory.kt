@@ -3,7 +3,6 @@ package com.my.mypaging3.dagger.features.feature_b.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.my.mypaging3.dagger.core.CustomLogger
-import com.my.mypaging3.dagger.features.feature_b.FeatureBViewModel
 
 class FeatureBViewModelFactory(private val customLogger: CustomLogger) : ViewModelProvider.Factory {
 

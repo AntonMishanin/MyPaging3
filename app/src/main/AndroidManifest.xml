@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPaging3">
         <activity
-            android:name=".dagger.features.feature_b.FeatureBActivity"
+            android:name=".dagger.features.feature_b.presentation.FeatureBActivity"
             android:exported="false" />
         <activity
             android:name=".dagger.features.feature_a.presentation.FeatureAActivity"
