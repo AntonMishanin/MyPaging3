@@ -32,20 +32,17 @@ abstract class SelfCloseableStreamAbstract<R, S extends Closeable> implements Se
     @Override
     final synchronized public R invoke() throws IOException {
         S stream = null;
-        IOException exception = null;
-        R result = null;
         try {
             stream = create();
-            result = executeBody(stream);
+            R result = executeBody(stream);
             stream.close();
+            return result;
         } catch (IOException e) {
-            exception = e;
             if (stream != null) {
                 stream.close();
             }
+            throw e;
         }
-        if (exception != null) throw exception;
-        return result;
     }
 
     @NonNull
@@ -59,6 +56,7 @@ abstract class FileSource<R, S extends Closeable> extends SelfCloseableStreamAbs
 
     private final File file;
 
+    //TODO: think about synchronized
     public FileSource(@NonNull String path) {
         this(new File(path));
     }
