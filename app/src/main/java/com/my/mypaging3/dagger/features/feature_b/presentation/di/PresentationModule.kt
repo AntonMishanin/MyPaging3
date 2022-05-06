@@ -10,7 +10,7 @@ import dagger.Provides
 @Module
 class PresentationModule {
 
-    @PerFeature
+    //@PerFeature
     @Provides
     fun provideFeatureBViewModelFactory(customLogger: CustomLogger): FeatureBViewModelFactory {
         return FeatureBViewModelFactory(customLogger)

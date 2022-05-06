@@ -8,7 +8,7 @@ import javax.inject.Singleton
 @Module
 class LoggerModule {
 
-    @PerFeature
+   // @PerFeature
     @Provides
     fun provideCustomLogger(context: Context): CustomLogger {
         return CustomLogger.Base(context)
