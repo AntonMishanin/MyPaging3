@@ -8,5 +8,11 @@ class RxActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rx)
+
+        val observableHelper = ObservableHelper()
+        //observableHelper.checkObservableJust()
+        //observableHelper.checkObservableFrom()
+        observableHelper.checkObservableCreate()
+        //observableHelper.checkObservableDistinct()
     }
 }
