@@ -1,12 +1,16 @@
 package com.my.mypaging3.auth.github
 
 import io.reactivex.Single
+import retrofit2.Call
 import retrofit2.http.*
 
 //TODO: split auth api and resource api
 interface GitHubApi {
     @GET("/users")
     fun fetchNowPlaying(): Single<List<User>>
+
+    @GET("/users")
+    fun fetchNowPlaying2(): Call<List<Response>>
 
     @Headers("Accept: application/json")
     @POST("/login/device/code")

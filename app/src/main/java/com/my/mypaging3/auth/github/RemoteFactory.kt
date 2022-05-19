@@ -17,7 +17,7 @@ const val CONTENT_URL = "https://api.github.com"
 private const val EMAIL_SCOPE = "user:email"
 
 class RemoteFactory(private val token: String = "") {
-    fun provideRetrofit(baseUrl: String = AUTH_URL): Retrofit = Retrofit.Builder()
+    fun provideRetrofit(baseUrl: String = CONTENT_URL): Retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(provideOkHttpClient())
         .addCallAdapterFactory(provideRxAdapterFactory())
@@ -39,7 +39,7 @@ class RemoteFactory(private val token: String = "") {
 
     private fun provideLogging(): HttpLoggingInterceptor {
         val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
+        //logging.level = HttpLoggingInterceptor.Level.BODY
         return logging
     }
 

@@ -1,13 +1,73 @@
 package com.my.mypaging3.rx
 
 import android.os.SystemClock
+import com.my.mypaging3.auth.github.GitHubApi
+import com.my.mypaging3.auth.github.RemoteFactory
+import com.my.mypaging3.auth.github.Response
 import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiConsumer
 import io.reactivex.schedulers.Schedulers
 import okio.ByteString.Companion.toByteString
+import retrofit2.Call
 import java.util.concurrent.Callable
 
 class ObservableHelper {
+
+    private val retrofit = RemoteFactory().provideRetrofit()
+    private val gitHubApi = retrofit.create(GitHubApi::class.java)
+
+    private val observable1 = Observable.create<String> { emitter ->
+        println("1-start")
+
+        gitHubApi.fetchNowPlaying2().enqueue(object : retrofit2.Callback<List<Response>> {
+            override fun onResponse(
+                call: Call<List<Response>>,
+                response: retrofit2.Response<List<Response>>
+            ) {
+                println("1-success")
+                emitter.onNext("1-success")
+            }
+
+            override fun onFailure(call: Call<List<Response>>, t: Throwable) =
+                println("1-error")
+        })
+    }//.startWith("1-default value")
+
+    private val observable2 = Observable.create<String> { emitter ->
+        println("2-start")
+
+        gitHubApi.fetchNowPlaying2().enqueue(object : retrofit2.Callback<List<Response>> {
+            override fun onResponse(
+                call: Call<List<Response>>,
+                response: retrofit2.Response<List<Response>>
+            ) {
+                println("2-success")
+                emitter.onNext("2-success")
+            }
+
+            override fun onFailure(call: Call<List<Response>>, t: Throwable) =
+                println("2-error")
+        })
+    }//.startWith("2-default value")
+
+    private val observable3 = Observable.create<String> { emitter ->
+        println("3-start")
+
+        gitHubApi.fetchNowPlaying2().enqueue(object : retrofit2.Callback<List<Response>> {
+            override fun onResponse(
+                call: Call<List<Response>>,
+                response: retrofit2.Response<List<Response>>
+            ) {
+                println("3-success")
+                emitter.onNext("3-success")
+            }
+
+            override fun onFailure(call: Call<List<Response>>, t: Throwable) =
+                println("3-error${t.message}")
+        })
+    }//.startWith("3-default value")
 
     fun checkObservableJust() {
         println("MAIN - ${Thread.currentThread()}")
@@ -116,6 +176,7 @@ class ObservableHelper {
             .doOnNext {
 
             }
+            //.join()
             .concatMap {
                 // Do some deal for every item
                 Observable.fromCallable { it }
@@ -125,12 +186,118 @@ class ObservableHelper {
             }, { array, value ->
                 array.add(value)
             })
-            .doOnSuccess {  }
+            .doOnSuccess { }
+            //.concatWith()
             .subscribe({ next ->
                 println(next)
             }, { error ->
                 println(error)
             })
+    }
+
+    fun checkSingle() {
+        val disposable = Single.fromCallable { emptyList<Int>() }
+            .subscribe { it ->
+                println(it)
+            }
+    }
+
+    fun checkZip() {
+
+        val disposable1 = Observable.zip(observable1, observable2, observable3, { q, w, e ->
+            println("q")
+            println("w")
+            println("e")
+        })
+            .subscribeOn(Schedulers.io())
+            .subscribe {
+
+            }
+
+        val disposable = Single.fromCallable { emptyList<Int>() }
+            .subscribe { it ->
+                println(it)
+            }
+    }
+
+    fun checkSequenceConcatMap() {
+        val disposable = Observable.just("")
+            .concatMap {
+                println("observable1")
+                observable1
+            }
+            .concatMap {
+                println("observable2")
+                observable2
+            }
+            .concatMap {
+                println("observable3")
+                observable3
+            }.subscribeOn(Schedulers.io())
+            .subscribe {
+                println("success")
+            }
+
+    }
+
+    fun checkSingleScheduler() {
+        val disposable = Observable.just("")
+            .flatMap {
+                println("observable1")
+                observable1
+            }
+           // .toMap { value: String ->
+           //
+           //     2
+           // }
+            .flatMap {
+                println("observable2")
+                observable2
+            }
+            .flatMap {
+                println("observable3")
+                observable3
+            }
+            .subscribeOn(Schedulers.single())
+            .subscribe {
+                println("success")
+            }
+
+    }
+
+    fun checkConcat() {
+        val disposable = Observable.concat(observable1, observable2, observable3)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread(), true)
+            .subscribe {
+                println("subscribe $it")
+            }
+    }
+
+    fun checkCombineLatest() {
+        val disposable = Observable.combineLatest(observable1, observable2, { f, s ->
+
+
+            "result"
+        })
+           // .concatMapCompletable {
+           //
+           //     Observable.just(it)
+           // }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread(), true)
+            .subscribe {
+                println("subscribe $it")
+            }
+    }
+
+    fun checkConcatWith() {
+        val disposable = observable1.concatWith(observable2)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread(), true)
+            .subscribe {
+                println("subscribe $it")
+            }
     }
 
     private fun someIoDeal(): Observable<Int> {

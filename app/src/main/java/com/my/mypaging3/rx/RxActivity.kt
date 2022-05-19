@@ -12,7 +12,8 @@ class RxActivity : AppCompatActivity() {
         val observableHelper = ObservableHelper()
         //observableHelper.checkObservableJust()
         //observableHelper.checkObservableFrom()
-        observableHelper.checkObservableCreate()
+        //observableHelper.checkObservableCreate()
         //observableHelper.checkObservableDistinct()
+        observableHelper.checkConcatWith()
     }
 }

@@ -17,6 +17,7 @@ fun main() {
     //observableHelper.checkObservableFrom()
     //observableHelper.checkObservableCreate()
     //observableHelper.checkObservableDistinct()
-    observableHelper.checkEmitItemsOneByOne()
+    //observableHelper.checkEmitItemsOneByOne()
+    observableHelper.checkSingle()
 }
 
