@@ -241,26 +241,57 @@ class ObservableHelper {
     }
 
     fun checkSingleScheduler() {
-        val disposable = Observable.just("")
-            .flatMap {
-                println("observable1")
-                observable1
+        val disposable = Observable.create<Int> {
+            println("CREATE")
+            it.onNext(1)
+            it.onComplete()
+        }
+          //  .startWith {
+          //      println("33333333")
+          //      println(Thread.currentThread())
+          //      it.onNext(0)
+          //  }
+            .map { it.toString() }
+            .doOnSubscribe {
+                println("3333333")
+                println(Thread.currentThread())
             }
-           // .toMap { value: String ->
-           //
-           //     2
-           // }
-            .flatMap {
-                println("observable2")
-                observable2
+            // .flatMap {
+            //     println("observable1")
+            //     observable1
+            // }
+            // .toMap { value: String ->
+            //
+            //     2
+            // }
+            // .flatMap {
+            //     println("observable2")
+            //     observable2
+            // }
+            //.blockingFirst()
+            .observeOn(Schedulers.computation())
+            //.flatMap {
+            //    println("observable3")
+            //    observable3
+            //}
+            .startWith("222222")
+            .subscribeOn(Schedulers.io())
+            .startWith("111111")
+            .startWith {
+
+
             }
-            .flatMap {
-                println("observable3")
-                observable3
+            .doOnSubscribe {
+                println("000000")
+                println(Thread.currentThread())
             }
-            .subscribeOn(Schedulers.single())
+           //.switchMap{
+
+           //}
+
             .subscribe {
-                println("success")
+                println("result $it")
+                println(Thread.currentThread())
             }
 
     }
@@ -280,10 +311,10 @@ class ObservableHelper {
 
             "result"
         })
-           // .concatMapCompletable {
-           //
-           //     Observable.just(it)
-           // }
+            // .concatMapCompletable {
+            //
+            //     Observable.just(it)
+            // }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread(), true)
             .subscribe {

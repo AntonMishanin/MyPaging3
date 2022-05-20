@@ -18,6 +18,6 @@ fun main() {
     //observableHelper.checkObservableCreate()
     //observableHelper.checkObservableDistinct()
     //observableHelper.checkEmitItemsOneByOne()
-    observableHelper.checkSingle()
+    observableHelper.checkSingleScheduler()
 }
 
