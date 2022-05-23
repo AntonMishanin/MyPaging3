@@ -4,19 +4,52 @@ import android.os.SystemClock
 import com.my.mypaging3.auth.github.GitHubApi
 import com.my.mypaging3.auth.github.RemoteFactory
 import com.my.mypaging3.auth.github.Response
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.BiConsumer
 import io.reactivex.schedulers.Schedulers
-import okio.ByteString.Companion.toByteString
+import io.reactivex.subjects.BehaviorSubject
 import retrofit2.Call
-import java.util.concurrent.Callable
 
 class ObservableHelper {
 
     private val retrofit = RemoteFactory().provideRetrofit()
     private val gitHubApi = retrofit.create(GitHubApi::class.java)
+
+    private val singleFromNetwork = Single.create<String> { emitter ->
+        println("1-start")
+
+        gitHubApi.fetchNowPlaying2().enqueue(object : retrofit2.Callback<List<Response>> {
+            override fun onResponse(
+                call: Call<List<Response>>,
+                response: retrofit2.Response<List<Response>>
+            ) {
+                println("1-success")
+                emitter.onSuccess("1-success")
+            }
+
+            override fun onFailure(call: Call<List<Response>>, t: Throwable) =
+                println("1-error")
+        })
+    }
+
+    private val singleFromDb = Single.create<String> { emitter ->
+        println("1-start")
+
+        gitHubApi.fetchNowPlaying2().enqueue(object : retrofit2.Callback<List<Response>> {
+            override fun onResponse(
+                call: Call<List<Response>>,
+                response: retrofit2.Response<List<Response>>
+            ) {
+                println("1-success")
+                emitter.onSuccess("1-success")
+            }
+
+            override fun onFailure(call: Call<List<Response>>, t: Throwable) =
+                println("1-error")
+        })
+    }
 
     private val observable1 = Observable.create<String> { emitter ->
         println("1-start")
@@ -28,6 +61,7 @@ class ObservableHelper {
             ) {
                 println("1-success")
                 emitter.onNext("1-success")
+                emitter.onComplete()
             }
 
             override fun onFailure(call: Call<List<Response>>, t: Throwable) =
@@ -176,6 +210,7 @@ class ObservableHelper {
             .doOnNext {
 
             }
+            //.concatWith()
             //.join()
             .concatMap {
                 // Do some deal for every item
@@ -196,10 +231,23 @@ class ObservableHelper {
     }
 
     fun checkSingle() {
-        val disposable = Single.fromCallable { emptyList<Int>() }
-            .subscribe { it ->
-                println(it)
+        val disposable = Flowable.fromCallable { emptyList<Int>() }
+            //val disposable = Single.fromCallable { emptyList<Int>() }
+            //.subscribe { it ->
+            //    println(it)
+            //}
+            .doOnTerminate {
+
             }
+            .subscribe({ success ->
+
+            }, { d ->
+
+            }, {
+
+            }, { d ->
+
+            })
     }
 
     fun checkZip() {
@@ -220,10 +268,13 @@ class ObservableHelper {
             }
     }
 
+    private val content1 = BehaviorSubject.create<String>()
+
     fun checkSequenceConcatMap() {
         val disposable = Observable.just("")
             .concatMap {
                 println("observable1")
+                content1.onNext(it)
                 observable1
             }
             .concatMap {
@@ -237,7 +288,43 @@ class ObservableHelper {
             .subscribe {
                 println("success")
             }
+    }
 
+    // fun fetchContent(): Flowable<String> {
+    //     return if (content1.value.isNullOrEmpty()) {
+    //         content1.toFlowable(BackpressureStrategy.MISSING)
+    //     } else {
+    //         observable1 // do request
+    //     }
+    // }
+
+    fun checkOnlineFirst(isNeedFresh: Boolean = false): Single<String> {
+        return if (isNeedFresh) {
+            doFreshRequest()
+        } else {
+            val sessionCache = ""
+            when (sessionCache.isEmpty()) {
+                true -> doFreshRequest()
+                false -> Single.fromCallable { sessionCache }
+            }
+        }
+    }
+
+    private fun doFreshRequest(): Single<String> {
+        return singleFromNetwork
+            .doOnSuccess {
+                // save to db and to session cache
+            }
+            .onErrorResumeNext {
+                // check network state and show - need to turn on internet
+                // check token exception and refresh token
+                // request from db
+                singleFromDb // if db is empty - show
+            }
+            .map {
+                // convert to domain entity
+                it
+            }
     }
 
     fun checkSingleScheduler() {
@@ -246,11 +333,11 @@ class ObservableHelper {
             it.onNext(1)
             it.onComplete()
         }
-          //  .startWith {
-          //      println("33333333")
-          //      println(Thread.currentThread())
-          //      it.onNext(0)
-          //  }
+            //  .startWith {
+            //      println("33333333")
+            //      println(Thread.currentThread())
+            //      it.onNext(0)
+            //  }
             .map { it.toString() }
             .doOnSubscribe {
                 println("3333333")
@@ -285,10 +372,10 @@ class ObservableHelper {
                 println("000000")
                 println(Thread.currentThread())
             }
-           //.switchMap{
+            //.switchMap{
 
-           //}
-
+            //}
+            //         .subscribeWith();
             .subscribe {
                 println("result $it")
                 println(Thread.currentThread())

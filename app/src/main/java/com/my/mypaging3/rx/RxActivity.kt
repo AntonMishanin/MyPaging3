@@ -14,6 +14,6 @@ class RxActivity : AppCompatActivity() {
         //observableHelper.checkObservableFrom()
         //observableHelper.checkObservableCreate()
         //observableHelper.checkObservableDistinct()
-        observableHelper.checkSingleScheduler()
+        observableHelper.checkConcat()
     }
 }
