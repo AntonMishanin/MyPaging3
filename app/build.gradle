@@ -73,6 +73,7 @@ dependencies {
     def work_version = "2.7.1"
     // Kotlin + coroutines
     implementation "androidx.work:work-runtime-ktx:$work_version"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 
     def room_version = "2.4.2"
 

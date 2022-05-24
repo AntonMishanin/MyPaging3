@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPaging3">
         <activity
+            android:name=".coroutines.CoroutinesActivity"
+            android:exported="false" />
+        <activity
             android:name=".rx.RxActivity"
             android:exported="false" />
         <activity

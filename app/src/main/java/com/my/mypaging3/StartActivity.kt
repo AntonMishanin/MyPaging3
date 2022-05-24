@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.my.mypaging3.auth.AuthActivity
+import com.my.mypaging3.coroutines.CoroutinesActivity
 import com.my.mypaging3.custom.presentation.CustomPagingActivity
 import com.my.mypaging3.custom_view.LearnViewActivity
 import com.my.mypaging3.dagger.features.feature_a.presentation.FeatureAActivity
@@ -22,6 +23,10 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
+
+        findViewById<View>(R.id.coroutines).setOnClickListener {
+            startActivity(Intent(this, CoroutinesActivity::class.java))
+        }
 
         findViewById<View>(R.id.rx).setOnClickListener {
             startActivity(Intent(this, RxActivity::class.java))
