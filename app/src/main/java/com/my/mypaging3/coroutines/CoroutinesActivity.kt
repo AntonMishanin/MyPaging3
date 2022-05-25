@@ -58,9 +58,9 @@ class CoroutinesActivity : AppCompatActivity() {
 
         }
 
-        viewModel.content.onEach {
+        viewModel.observeState().onEach {
             println("ACTIVITY $it")
-        }
+        }.launchIn(lifecycleScope)
         //fetchContent()
     }
 }
@@ -81,25 +81,34 @@ class CoroutinesViewModel(
     private val interactor: CoroutinesInteractor = CoroutinesInteractor()
 ) : ViewModel() {
 
-  //  var content: StateFlow<String> = MutableStateFlow()//= fetchSomeContent()
-  var content = MutableSharedFlow<String>()
+    private val _event = MutableStateFlow("init")
 
     init {
-      //  viewModelScope.launch {
-      //  fetchSomeContent().onEach {
-      //      println("VIEW MODEL $it")
-      //  }.launchIn(viewModelScope)//.collect()
-      //
-      //  //content.value = interactor.fetchContent()
-      //  }
+        //  viewModelScope.launch {
+        //  fetchSomeContent().onEach {
+        //      println("VIEW MODEL $it")
+        //  }.launchIn(viewModelScope)//.collect()
+        //
+        //  //content.value = interactor.fetchContent()
+        //  }
 
-      //  content.launchIn(viewModelScope).emit("floww()").launchI
+        //  content.launchIn(viewModelScope).emit("floww()").launchI
+        //content.tryEmit()
+        //synchronized()
+
+
+
+        interactor.flowContent().onEach {
+            _event.value = it
+        }.launchIn(scope = viewModelScope + Dispatchers.Main)
     }
 
-    private suspend fun fetchSomeContent(): StateFlow<String>  {
+    fun observeState(): StateFlow<String> = _event
+
+    private suspend fun fetchSomeContent(): StateFlow<String> {
         val stateFlow = MutableStateFlow("init value")
         stateFlow.emit("first value")
- return stateFlow
+        return stateFlow
     }
 
     private fun floww() = flow {
@@ -108,10 +117,22 @@ class CoroutinesViewModel(
 }
 
 class CoroutinesInteractor(
-    private val repository: CoroutinesRepository = CoroutinesRepository()
+    private val repository: CoroutinesRepository = CoroutinesRepository(),
+    private val flowRepository: CoroutinesRepository2 = CoroutinesRepository2()
 ) {
 
-    suspend fun fetchContent() = repository.fetchContent()
+    suspend fun fetchContent(): String {
+        return withContext(Dispatchers.IO) {
+            repository.fetchContent()
+        }
+    }
+
+    fun flowContent() = flowRepository.fetchContent()
+        .map {
+            // handle result and do some logic
+            it
+        }.flowOn(Dispatchers.IO)
+
 }
 
 class CoroutinesRepository {
@@ -145,8 +166,41 @@ class CoroutinesRepository {
 
 class CoroutinesRepository2 {
 
-    fun fetchContent(isNeedFresh: Boolean = true) {
+    fun fetchContent(isNeedFresh: Boolean = true): Flow<String> {
+        return when (isNeedFresh) {
+            true -> networkRequest()
+            false -> storageFetch()
+        }
+    }
 
+    private fun networkRequest() = flow {
 
+        val value = networkSuspend()
+        emit(value)
+        coroutineScope {
+            async {
+                saveToStorageSuspend(value)
+            }
+        }
+
+    }
+
+    private fun storageFetch() = flow {
+        val value = fetchFromSuspend()
+        emit(value)
+    }
+
+    private suspend fun networkSuspend(): String {
+        delay(1_500)
+        return "network request"
+    }
+
+    private suspend fun saveToStorageSuspend(value: String) {
+        delay(1_000)
+    }
+
+    private suspend fun fetchFromSuspend(): String {
+        delay(1_000)
+        return "storage fetch"
     }
 }
