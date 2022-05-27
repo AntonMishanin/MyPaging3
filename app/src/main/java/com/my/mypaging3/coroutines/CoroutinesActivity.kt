@@ -10,7 +10,10 @@ import com.my.mypaging3.R
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import okhttp3.internal.wait
 import java.lang.IllegalArgumentException
+import java.lang.NullPointerException
+import kotlin.math.log
 import kotlin.random.Random
 import kotlin.system.measureTimeMillis
 
@@ -19,6 +22,7 @@ class CoroutinesActivity : AppCompatActivity() {
     private val viewModel by viewModels<CoroutinesViewModel>()
 
     private val scope = CoroutineScope(Dispatchers.Main)
+    private val scope2 = CoroutineScope(SupervisorJob())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +38,7 @@ class CoroutinesActivity : AppCompatActivity() {
                 fetchContent2()
             }
 
-            println("time1 $time1")
+            //println("time1 $time1")
 
             val time2 = measureTimeMillis {
                 // parallel
@@ -44,18 +48,18 @@ class CoroutinesActivity : AppCompatActivity() {
                 result2.await()
             }
 
-            println("time2 $time2")
+            //println("time2 $time2")
         }
 
         val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            println("throwable $throwable")
+            //println("throwable $throwable")
         }
 
         CoroutineScope(Dispatchers.IO)
         MainScope()
 
         lifecycleScope.launch(exceptionHandler + Dispatchers.IO) {
-            println(Thread.currentThread())
+            //println(Thread.currentThread())
             throw IllegalArgumentException("sds")
         }
 
@@ -67,16 +71,16 @@ class CoroutinesActivity : AppCompatActivity() {
         }
 
         viewModel.observeState().onEach {
-            println("ACTIVITY $it")
+            //println("ACTIVITY $it")
         }.launchIn(lifecycleScope)
         //fetchContent()
 
         viewModel.channelEvents.onEach {
-            println("CHANNEL $it")
+            //println("CHANNEL $it")
         }.launchIn(lifecycleScope)
 
         viewModel.flowEvent.onEach {
-            println("SHARED FLOW $it")
+            //println("SHARED FLOW $it")
         }.launchIn(lifecycleScope)
     }
 
@@ -110,15 +114,48 @@ class CoroutinesViewModel(
     val channelEvents = _channelEvents.receiveAsFlow()
 
     init {
-        viewModelScope.launch {
+        // viewModelScope.launch {
 
-            flowEvent.emit("FLOW SHARED")
-            _channelEvents.send("CHANNEL VALUE")
+        //     flowEvent.emit("FLOW SHARED")
+        //     _channelEvents.send("CHANNEL VALUE")
 
-            println(interactor.fetch())
+        //     println(interactor.fetch())
+        // }
+
+        // runBlocking {
+//
+        //     val asyncJob = Job()
+        //     val result = viewModelScope.async(asyncJob) {
+        //         while (true) {
+        //             delay(1000)
+        //             println("ASYNC 2")
+        //         }
+        //     }
+//
+        //     viewModelScope.launch {
+        //             delay(3000)
+        //             println("launch 1")
+        //       //  asyncJob.cancel()
+        //     }
+        // }
+        // println("INIT")
+
+        val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            println("CATCH EXCEPTION")
         }
 
+        viewModelScope.launch {
 
+            viewModelScope.launch(exceptionHandler) {
+
+                throw Exception("")
+
+            }
+            viewModelScope.async(exceptionHandler) {
+                throw Exception("")
+
+            }.await()
+        }
         //  viewModelScope.launch {
         //  fetchSomeContent().onEach {
         //      println("VIEW MODEL $it")
@@ -144,6 +181,7 @@ class CoroutinesViewModel(
     private val emitter = MutableSharedFlow<String>()
 
     fun onTextChanged(value: String) {
+
         viewModelScope.launch {
             emitter.emit(value)
 
