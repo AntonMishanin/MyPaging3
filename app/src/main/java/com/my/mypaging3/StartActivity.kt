@@ -15,6 +15,7 @@ import com.my.mypaging3.okhttp.OkHttpActivity
 import com.my.mypaging3.room.RoomActivity
 import com.my.mypaging3.rx.RxActivity
 import com.my.mypaging3.test.presentation.LoginActivity
+import com.my.mypaging3.thread.ThreadActivity
 import com.my.mypaging3.viewmodel.ViewModelByHandActivity
 import com.my.mypaging3.websocket.WebSocketActivity
 import com.my.mypaging3.work.WorkActivity
@@ -23,6 +24,10 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
+
+        findViewById<View>(R.id.thread).setOnClickListener {
+            startActivity(Intent(this, ThreadActivity::class.java))
+        }
 
         findViewById<View>(R.id.coroutines).setOnClickListener {
             startActivity(Intent(this, CoroutinesActivity::class.java))

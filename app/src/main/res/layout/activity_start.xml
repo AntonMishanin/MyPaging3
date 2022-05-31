@@ -8,6 +8,12 @@
     tools:context=".StartActivity">
 
     <Button
+        android:id="@+id/thread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thread" />
+
+    <Button
         android:id="@+id/coroutines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
