@@ -31,17 +31,8 @@ abstract class SelfCloseableStreamAbstract<R, S extends Closeable> implements Se
     @NonNull
     @Override
     final synchronized public R invoke() throws IOException {
-        S stream = null;
-        try {
-            stream = create();
-            R result = executeBody(stream);
-            stream.close();
-            return result;
-        } catch (IOException e) {
-            if (stream != null) {
-                stream.close();
-            }
-            throw e;
+        try (S stream = create()) {
+            return executeBody(stream);
         }
     }
 
