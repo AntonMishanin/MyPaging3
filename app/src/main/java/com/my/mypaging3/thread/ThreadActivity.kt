@@ -1,8 +1,16 @@
 package com.my.mypaging3.thread
 
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import com.my.mypaging3.R
+import kotlinx.coroutines.sync.Mutex
+import okhttp3.internal.notify
+import okhttp3.internal.wait
+import java.util.concurrent.*
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReentrantLock
 
 class ThreadActivity : AppCompatActivity() {
 
@@ -11,6 +19,55 @@ class ThreadActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_thread)
+
+        val looperThread = LooperThread()
+        looperThread.start()
+
+
+        val thread = object : HandlerThread("sdsd") {
+            override fun run() {
+                // super.run()
+                println(Thread.currentThread())
+                sleep(3000)
+            }
+
+            fun sleep() {
+                println(Thread.currentThread())
+                sleep(3000)
+            }
+        }
+        thread.start()
+        //thread.interrupt()
+
+
+
+        val executor = Executors.newSingleThreadExecutor()
+        val future = executor.submit<String> {
+            Thread.sleep(1_000)
+            return@submit "TEST"
+        }
+        val result = future.get()
+        println(result)
+        println("AFTER")
+
+        val executorService = Executors.newFixedThreadPool(2)
+
+        //Executor
+        //ThreadPoolExecutor
+        future.get()
+
+        //CountDownLatch().await()
+
+        findViewById<Button>(R.id.button2).setOnClickListener {
+            //looperThread.doSomeWork()
+            thread.run()
+        }
+
+
+        val handler = Handler(Looper.getMainLooper())
+        // handler.sendMessage()
+        // handler.postAtTime()
+        // handler.removeCallbacks()
 
         //val runnable1 = Runnable1(count)
         //val runnable2 = Runnable1(count)
@@ -21,9 +78,16 @@ class ThreadActivity : AppCompatActivity() {
         //thread1.start()
         //thread2.start()
 
-        repeat(10000) {
-            Thread(Runnable1(count)).start()
-        }
+        // repeat(10000) {
+        //     Thread(Runnable1(count)).wait()//.start()
+        // }
+
+        // val lock = ReentrantLock()
+        // val l = Lock
+        // val myObject = Object()
+        // val m = Monitor()
+        // synchronized()
+
 
         // runnable1.print()
         // runnable2.print()
@@ -75,7 +139,7 @@ class MySingleton private constructor() {
 
         private val lock = Object()
 
-        //@Volatile
+        @Volatile
         private var instance: MySingleton? = null
 
         fun instance(): MySingleton {
@@ -106,5 +170,26 @@ class MySingleton private constructor() {
     fun doWork() {
         counter++
         //println(counter)
+    }
+}
+
+internal class LooperThread : Thread() {
+
+    private var mHandler: Handler? = null
+
+    override fun run() {
+        println("RUN")
+        Looper.prepare()
+        mHandler = Handler(Looper.myLooper()!!)
+        Looper.loop()
+    }
+
+    fun doSomeWork() {
+        println("START WORK 0")
+        mHandler?.post {
+            println("START WORK")
+            Thread.sleep(1_000)
+            println("FINISH WORK")
+        }
     }
 }
