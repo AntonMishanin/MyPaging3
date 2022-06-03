@@ -39,15 +39,31 @@ class ThreadActivity : AppCompatActivity() {
         thread.start()
         //thread.interrupt()
 
-
+        //ThreadPoolExecutor()
 
         val executor = Executors.newSingleThreadExecutor()
         val future = executor.submit<String> {
             Thread.sleep(1_000)
             return@submit "TEST"
         }
+
         val result = future.get()
+        future.cancel(false)
+
+        val futureTask = object : FutureTask<String>({
+            println("START")
+            Thread.sleep(2_000)
+            "sds"
+        }) {
+            override fun done() {
+                println("DONE ${get()}")
+
+            }
+        }
+        executor.execute(futureTask)
+        executor.shutdown()
         println(result)
+
         println("AFTER")
 
         val executorService = Executors.newFixedThreadPool(2)
@@ -56,7 +72,7 @@ class ThreadActivity : AppCompatActivity() {
         //ThreadPoolExecutor
         future.get()
 
-        //CountDownLatch().await()
+        //CountDownLatch().countDown()
 
         findViewById<Button>(R.id.button2).setOnClickListener {
             //looperThread.doSomeWork()
