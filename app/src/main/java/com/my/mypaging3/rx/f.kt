@@ -1,26 +1,7 @@
 package com.my.mypaging3.rx
 
-import java.util.stream.IntStream.range
+data class FF(val message: String){
 
-/*sealed interface F{
-
-    fun d()
-
-    class D(private val d: Int = 44, private val ee: String = "sssdsds") : F {
-        override fun d() {
-emptyList<Int>().forEach {
-
-    if(it == 1){
-        return@forEach
-    }
-return Nothing
-    TODO()
+    val id = 30003334
 }
-        }
-    }
-}
-
-fun fff(): Nothing{
-     throw NotImplementedError()
-}*/
 
