@@ -11,6 +11,7 @@ import com.my.mypaging3.custom_view.LearnViewActivity
 import com.my.mypaging3.dagger.features.feature_a.presentation.FeatureAActivity
 import com.my.mypaging3.dynamic_proxy.DynamicProxyActivity
 import com.my.mypaging3.library.presentation.MainActivity
+import com.my.mypaging3.location.LocationActivity
 import com.my.mypaging3.okhttp.OkHttpActivity
 import com.my.mypaging3.room.RoomActivity
 import com.my.mypaging3.rx.RxActivity
@@ -24,6 +25,10 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
+
+        findViewById<View>(R.id.location).setOnClickListener {
+            startActivity(Intent(this, LocationActivity::class.java))
+        }
 
         findViewById<View>(R.id.thread).setOnClickListener {
             startActivity(Intent(this, ThreadActivity::class.java))

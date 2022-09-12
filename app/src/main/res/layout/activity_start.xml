@@ -8,6 +8,12 @@
     tools:context=".StartActivity">
 
     <Button
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Location" />
+
+    <Button
         android:id="@+id/thread"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
