@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "734015276693",
+    "project_id": "myplayground-985ba",
+    "storage_bucket": "myplayground-985ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734015276693:android:c556c0a4aa41774a29fd9c",
+        "android_client_info": {
+          "package_name": "com.my.mypaging3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734015276693-2m4hthjmvv9v6sdncmltf8uc6vv4484m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCug4ERazSqU42vS9SVBhRPTxwmYwTPScs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "734015276693-2m4hthjmvv9v6sdncmltf8uc6vv4484m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

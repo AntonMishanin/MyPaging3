@@ -3,7 +3,12 @@ package com.my.mypaging3
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.my.mypaging3.auth.AuthActivity
 import com.my.mypaging3.coroutines.CoroutinesActivity
 import com.my.mypaging3.custom.presentation.CustomPagingActivity
@@ -22,19 +27,47 @@ import com.my.mypaging3.websocket.WebSocketActivity
 import com.my.mypaging3.work.WorkActivity
 
 class StartActivity : AppCompatActivity() {
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics.logEvent(
+            "CREATE",
+            bundleOf(
+                Pair("KEY1", "VALUE1"),
+                Pair("KEY2", "VALUE2")
+            )
+        )
+
+        intent.extras?.let {
+            for (key in it.keySet()) {
+                val value = intent.extras?.get(key)
+                Log.d("MAIN AC", "Key: $key Value: $value")
+                if (value != null) {
+                    val intent = Intent(this, NotificationActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    intent.putExtra("message", value.toString()+"FROM ACTIIVTY")
+                    startActivity(intent)
+                }
+            }
+        }
+
         findViewById<View>(R.id.location).setOnClickListener {
+            logEvent()
             startActivity(Intent(this, LocationActivity::class.java))
         }
 
         findViewById<View>(R.id.thread).setOnClickListener {
+            logEvent()
             startActivity(Intent(this, ThreadActivity::class.java))
         }
 
         findViewById<View>(R.id.coroutines).setOnClickListener {
+            logEvent()
             startActivity(Intent(this, CoroutinesActivity::class.java))
         }
 
@@ -89,5 +122,48 @@ class StartActivity : AppCompatActivity() {
         findViewById<View>(R.id.library).setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        firebaseAnalytics.logEvent(
+            "onStart",
+            bundleOf(
+                Pair("KEY1", "VALUE1"),
+                Pair("KEY2", "VALUE2")
+            )
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        firebaseAnalytics.logEvent(
+            "onResume",
+            bundleOf(
+                Pair("KEY1", "VALUE1"),
+                Pair("KEY2", "VALUE2")
+            )
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        firebaseAnalytics.logEvent(
+            FirebaseAnalytics.Event.SELECT_ITEM,
+            bundleOf(
+                Pair("KEY1", "VALUE1"),
+                Pair("KEY2", "VALUE2")
+            )
+        )
+    }
+
+    private fun logEvent(){
+        firebaseAnalytics.logEvent(
+            FirebaseAnalytics.Event.SELECT_ITEM,
+            bundleOf(
+                Pair("KEY1", "VALUE1"),
+                Pair("KEY2", "VALUE2")
+            )
+        )
     }
 }
