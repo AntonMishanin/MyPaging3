@@ -17,7 +17,9 @@ jobs:
           java-version: 11
 
       - name: Run Ktlint
-        run: ./gradlew ktlintStagingDebugCheck
+        run: ./gradlew lint
+        with:
+          report-path: build/reports/*.xml # Support glob patterns by https://www.npmjs.com/package/@actions/glob
 
       #Execute unit tests
       - name: Unit Test
