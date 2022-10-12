@@ -7,4 +7,8 @@ import com.my.mypaging3.dagger.core.DefaultFeatureDependencies
 class App : Application(), DefaultFeatureDependencies {
 
     override fun context(): Context = this@App
+
+    fun unusedFun(){
+        var r = ""
+    }
 }
