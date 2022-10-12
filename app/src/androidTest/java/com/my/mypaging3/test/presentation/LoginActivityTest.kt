@@ -15,6 +15,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/*
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 internal class LoginActivityTest {
@@ -61,4 +62,4 @@ internal class LoginActivityTest {
         onView(withId(R.id.success)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
         onView(withId(R.id.error)).check(matches(withEffectiveVisibility(Visibility.GONE)))
     }
-}
+}*/

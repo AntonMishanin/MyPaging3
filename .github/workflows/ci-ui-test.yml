@@ -4,7 +4,7 @@ on: [ push ]
 
 jobs:
   build:
-    runs-on: macOS-10.15
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -27,10 +27,3 @@ jobs:
           api: 21
           tag: default
           abi: x86
-
-      - name: Save logcat output
-        uses: actions/upload-artifact@master
-        if: failure()
-        with:
-          name: logcat
-          path: artifacts/logcat.log
