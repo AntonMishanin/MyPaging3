@@ -7,7 +7,7 @@ import org.mockito.Mockito
 import org.mockito.kotlin.mock
 
 
-class LoginInteractorTest {
+/*class LoginInteractorTest {
 
     private val emailValidator = mock<EmailValidator>()
 
@@ -58,5 +58,5 @@ class LoginInteractorTest {
         val loginInteractor = LoginInteractor(emailValidator)
         assertEquals(LoginState.Error(), loginInteractor.logIn(null))
     }
-}
+}*/
 
