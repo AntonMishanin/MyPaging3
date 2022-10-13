@@ -10,4 +10,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Linelint
         uses: fernandrone/linelint@master
+        with:
+          report-path: build/reports/*.xml # Support glob patterns by https://www.npmjs.com/package/@actions/glob
+          continue-on-error: false # If annotations contain error of severity, action-android-lint exit 1.
         id: linelint
